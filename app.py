@@ -725,7 +725,6 @@ st.metric(
     "Last Fault",
     last_fault
 )
-)
 st.dataframe(
     history.tail(20)
 )
