@@ -711,11 +711,20 @@ st.metric(
     "Total Detections",
     total_faults
 )
-last_fault = history.iloc[-1]["Fault"]
+
+fault_history = history[
+    history["Fault"] != "Normal"
+]
+
+if len(fault_history) > 0:
+    last_fault = fault_history.iloc[-1]["Fault"]
+else:
+    last_fault = "No Fault Detected"
 
 st.metric(
     "Last Fault",
     last_fault
+)
 )
 st.dataframe(
     history.tail(20)
