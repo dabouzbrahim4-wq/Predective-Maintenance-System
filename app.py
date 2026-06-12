@@ -686,6 +686,30 @@ st.dataframe(
 # ==================================
 # HEALTH HISTORY VISUALIZATION
 # ==================================
+try:
+    health_history = pd.read_csv(
+        "health_history.csv"
+    )
+
+except:
+    health_history = pd.DataFrame(
+        columns=["Time","HealthScore"]
+    )
+
+new_health = pd.DataFrame({
+    "Time":[datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
+    "HealthScore":[health_score]
+})
+
+health_history = pd.concat(
+    [health_history,new_health],
+    ignore_index=True
+)
+
+health_history.to_csv(
+    "health_history.csv",
+    index=False
+)
 
 st.subheader("📈 Machine Health Evolution")
 
