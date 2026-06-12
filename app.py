@@ -223,9 +223,15 @@ fault = "Normal"
 
 for point in [AX, AY, BX, BY]:
 
-    if point.get("Fault", "Normal") != "Normal":
+    current_fault = point.get("Fault", "Normal")
+    current_condition = point.get("Condition", "Healthy")
 
-        fault = point["Fault"]
+    if current_fault != "Normal":
+        fault = current_fault
+        break
+
+    if current_condition not in ["Healthy", "Normal"]:
+        fault = current_condition
         break
 
 if fault not in fault_info:
