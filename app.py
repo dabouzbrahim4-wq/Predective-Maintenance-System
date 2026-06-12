@@ -531,36 +531,31 @@ else:
     st.error("Critical Condition - Maintenance Required")
     
     # ==========================================
-# GLOBAL MACHINE STATUS
-# ==========================================
+if severity == "Critical":
 
-fault_count = 0
+    machine_status = "Critical"
+    status_color = "🔴"
 
-for point in [AX, AY, BX, BY]:
+elif severity == "High":
 
-    if point.get("Fault","Normal") != "Normal":
-        fault_count += 1
+    machine_status = "Warning"
+    status_color = "🟡"
 
-if fault_count == 0:
-
-    machine_status = "Healthy"
-    status_color = "🟢"
-
-elif fault_count <= 2:
+elif fault_count > 0:
 
     machine_status = "Warning"
     status_color = "🟡"
 
 else:
 
-    machine_status = "Critical"
-    status_color = "🔴"
-
-st.subheader("⚙ Global Machine Status")
+    machine_status = "Healthy"
+    status_color = "🟢"
+    st.subheader("⚙ Global Machine Status")
 
 st.info(
     f"{status_color} Current Status : {machine_status}"
 )
+
 if machine_status == "Critical":
     st.error("🚨 Critical Machine Condition")
 
@@ -604,36 +599,6 @@ with colD:
 
 st.markdown("---")
 # ==================================================
-# MAIN INFORMATION
-# ==================================================
-
-st.subheader("📋 Main Diagnostic Information")
-
-col1, col2, col3 = st.columns(3)
-
-with col1:
-
-    st.markdown("### 🔍 Fault")
-
-    if fault == "Normal":
-        st.success(fault)
-    else:
-        st.error(fault)
-
-    st.markdown("### 📍 Fault Location")
-    st.info(location)
-
-with col2:
-
-    st.markdown("### ⚠ Severity")
-    st.warning(severity)
-
-    st.markdown("### 🏥 Health Score")
-    st.metric(
-        "Health",
-        f"{health_score:.1f}%"
-    )
-
 with col3:
 
     st.markdown("### ⏳ Remaining Useful Life")
@@ -643,10 +608,11 @@ with col3:
     )
 
     st.markdown("### 🔧 Recommendation")
-    st.write(recommendation)
 
-st.markdown("---")
-
+    if fault == "Normal":
+        st.success(recommendation)
+    else:
+        st.warning(recommendation)
 # ==========================================
 # CURRENT FEATURES
 # ==========================================
