@@ -493,7 +493,7 @@ with col10:
     )
 st.markdown("---")
 
-with col3:
+
 st.markdown("---")
 
 col11, col12 = st.columns(2)
@@ -679,21 +679,10 @@ for key in ["AX", "AY", "BX", "BY"]:
     if key not in st.session_state:
         st.session_state[key] = []
 
-st.session_state["AX"].append(
-    float(AX.get("RMS", 0))
-)
-
-st.session_state["AY"].append(
-    float(AY.get("RMS", 0))
-)
-
-st.session_state["BX"].append(
-    float(BX.get("RMS", 0))
-)
-
-st.session_state["BY"].append(
-    float(BY.get("RMS", 0))
-)
+st.session_state["AX"].append(float(AX.get("RMS", 0)))
+st.session_state["AY"].append(float(AY.get("RMS", 0)))
+st.session_state["BX"].append(float(BX.get("RMS", 0)))
+st.session_state["BY"].append(float(BY.get("RMS", 0)))
 
 for key in ["AX", "AY", "BX", "BY"]:
     if len(st.session_state[key]) > 50:
@@ -717,12 +706,52 @@ st.plotly_chart(
 )
 
 # ==================================
+# VIBRATION SIGNAL
+# ==================================
+
+st.subheader("📡 Vibration Signal")
+
+signal = [
+    float(AX.get("RMS", 0)),
+    float(AY.get("RMS", 0)),
+    float(BX.get("RMS", 0)),
+    float(BY.get("RMS", 0))
+]
+
+fig_signal = go.Figure()
+
+fig_signal.add_trace(
+    go.Scatter(
+        x=["A-X", "A-Y", "B-X", "B-Y"],
+        y=signal,
+        mode="lines+markers",
+        name="Vibration"
+    )
+)
+
+fig_signal.update_layout(
+    title="Vibration Signal",
+    xaxis_title="Monitoring Point",
+    yaxis_title="Amplitude"
+)
+
+st.plotly_chart(
+    fig_signal,
+    use_container_width=True
+)
+
+# ==================================
 # FFT SPECTRUM
 # ==================================
 
 st.subheader("📊 FFT Spectrum")
 
-freq = [10, 20, 30, 40]
+freq = [
+    AX.get("PeakFreq_Hz", 0),
+    AY.get("PeakFreq_Hz", 0),
+    BX.get("PeakFreq_Hz", 0),
+    BY.get("PeakFreq_Hz", 0)
+]
 
 amp = [
     AX.get("PeakAmp", 0),
@@ -752,144 +781,38 @@ st.plotly_chart(
     use_container_width=True
 )
 
-# ==========================================
-# RMS TREND PER POINT
-# ==========================================
-
-st.subheader("📈 RMS Trend Per Monitoring Point")
-
-for key in ["AX","AY","BX","BY"]:
-    if key not in st.session_state:
-        st.session_state[key] = []
-
-st.session_state["AX"].append(
-    float(AX.get("RMS",0))
-)
-
-st.session_state["AY"].append(
-    float(AY.get("RMS",0))
-)
-
-st.session_state["BX"].append(
-    float(BX.get("RMS",0))
-)
-
-st.session_state["BY"].append(
-    float(BY.get("RMS",0))
-)
-
-for key in ["AX","AY","BX","BY"]:
-    if len(st.session_state[key]) > 50:
-        st.session_state[key].pop(0)
-
-trend_df = pd.DataFrame({
-    "AX": st.session_state["AX"],
-    "AY": st.session_state["AY"],
-    "BX": st.session_state["BX"],
-    "BY": st.session_state["BY"]
-})
-
-fig = px.line(
-    trend_df,
-    title="Monitoring Points RMS Evolution"
-)
-
-st.plotly_chart(
-    fig,
-    use_container_width=True
-)
-
-st.subheader("📡 Vibration Signal")
-
-signal = [
-    AX.get("RMS",0),
-    AY.get("RMS",0),
-    BX.get("RMS",0),
-    BY.get("RMS",0)
-]
-
-fig_signal = go.Figure()
-
-fig_signal.add_trace(
-    go.Scatter(
-        y=signal,
-        mode="lines+markers",
-        name="Vibration"
-    )
-)
-
-fig_signal.update_layout(
-    title="Vibration Signal",
-    xaxis_title="Monitoring Point",
-    yaxis_title="Amplitude"
-)
-
-st.plotly_chart(
-    fig_signal,
-    use_container_width=True
-)
-st.subheader("📊 FFT Spectrum")
-
-freq = [10,20,30,40]
-amp = [
-    AX.get("PeakAmp",0),
-    AY.get("PeakAmp",0),
-    BX.get("PeakAmp",0),
-    BY.get("PeakAmp",0)
-]
-
-fig_fft = go.Figure()
-
-fig_fft.add_trace(
-    go.Bar(
-        x=freq,
-        y=amp
-    )
-)
-
-fig_fft.update_layout(
-    title="Frequency Spectrum",
-    xaxis_title="Frequency (Hz)",
-    yaxis_title="Amplitude"
-)
-
-st.plotly_chart(
-    fig_fft,
-    use_container_width=True
-)
 # =====================================
 # HEALTH TREND
 # =====================================
 
 st.subheader("📈 Monitoring Points Health")
 
-trend_df = pd.DataFrame({
-    "Point":["A-X","A-Y","B-X","B-Y"],
-    "Health Score":[
-        AX.get("HealthScore",0),
-        AY.get("HealthScore",0),
-        BX.get("HealthScore",0),
-        BY.get("HealthScore",0)
+health_df = pd.DataFrame({
+    "Point": ["A-X", "A-Y", "B-X", "B-Y"],
+    "Health Score": [
+        AX.get("HealthScore", 0),
+        AY.get("HealthScore", 0),
+        BX.get("HealthScore", 0),
+        BY.get("HealthScore", 0)
     ]
 })
 
-fig3 = px.line(
-    trend_df,
+fig_health_points = px.line(
+    health_df,
     x="Point",
     y="Health Score",
     markers=True,
     title="Health Index Distribution"
 )
 
-fig3.update_layout(
-    yaxis_range=[0,100]
+fig_health_points.update_layout(
+    yaxis_range=[0, 100]
 )
 
 st.plotly_chart(
-    fig3,
+    fig_health_points,
     use_container_width=True
 )
-
 st.subheader("📄 Generate Maintenance Report")
 
 report_text = f"""
