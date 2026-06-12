@@ -886,7 +886,7 @@ st.plotly_chart(
     use_container_width=True
 )
 
-
+st.subheader("Generate Maintenance Report")
 report_text = f"""
 ==================================================
         PREDICTIVE MAINTENANCE REPORT
