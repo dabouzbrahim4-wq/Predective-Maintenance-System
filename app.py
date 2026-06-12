@@ -413,70 +413,66 @@ critical_faults = sum([
 col1, col2, col3, col4, col5, col6 = st.columns(6)
 
 with col1:
-
     st.metric(
         "🏥 Health Score",
         f"{health_score:.0f}%"
     )
 
 with col2:
-
     st.metric(
         "📍 Active Points",
         "4"
     )
 
 with col3:
-
     st.metric(
         "🚨 Faulty Points",
         critical_faults
     )
 
 with col4:
-    with col5:
+    st.metric(
+        "⚙ Average RMS",
+        round(avg_rms, 2)
+    )
 
+with col5:
     st.metric(
         "⚡ Acceleration",
         f"{avg_rms:.2f} g"
     )
 
 with col6:
-
     st.metric(
         "🚀 Velocity RMS",
         f"{velocity_rms:.2f} mm/s"
     )
 
-    st.metric(
-        "⚙ Average RMS",
-        round(avg_rms,2)
-    )
-
 st.markdown("---")
+
 col7, col8, col9, col10 = st.columns(4)
 
 with col7:
-
     st.metric(
         "📊 Max RMS",
-        round(max(
-            AX.get("RMS",0),
-            AY.get("RMS",0),
-            BX.get("RMS",0),
-            BY.get("RMS",0)
-        ),2)
+        round(
+            max(
+                AX.get("RMS", 0),
+                AY.get("RMS", 0),
+                BX.get("RMS", 0),
+                BY.get("RMS", 0)
+            ),
+            2
+        )
     )
 
 with col8:
-    
     st.metric(
         "🔍 Monitoring Points",
         "A-X | A-Y | B-X | B-Y"
     )
 
 with col9:
-
     st.metric(
         "⏳ Estimated RUL",
         "120 h"
@@ -488,7 +484,6 @@ with col10:
 
     if critical_faults >= 2:
         status = "Critical"
-
     elif critical_faults == 1:
         status = "Warning"
 
@@ -496,7 +491,6 @@ with col10:
         "🚦 Machine Status",
         status
     )
-
 st.markdown("---")
 
 # ==========================================
