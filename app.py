@@ -12,6 +12,7 @@ from reportlab.platypus import (
     Paragraph,
     Spacer
 )
+import numpy as np
 from reportlab.lib.styles import getSampleStyleSheet
 from streamlit_autorefresh import st_autorefresh
 from firebase_config import root 
@@ -393,7 +394,7 @@ avg_rms = (
     float(BX.get("RMS",0)) +
     float(BY.get("RMS",0))
 ) / 4
-
+velocity_rms = avg_rms * 4.5
 health_score = max(
     0,
     min(
@@ -409,7 +410,7 @@ critical_faults = sum([
     BY.get("Fault","Normal") != "Normal"
 ])
 
-col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3, col4, col5, col6 = st.columns(6)
 
 with col1:
 
@@ -433,6 +434,19 @@ with col3:
     )
 
 with col4:
+    with col5:
+
+    st.metric(
+        "⚡ Acceleration",
+        f"{avg_rms:.2f} g"
+    )
+
+with col6:
+
+    st.metric(
+        "🚀 Velocity RMS",
+        f"{velocity_rms:.2f} mm/s"
+    )
 
     st.metric(
         "⚙ Average RMS",
@@ -440,9 +454,9 @@ with col4:
     )
 
 st.markdown("---")
-col5, col6, col7, col8 = st.columns(4)
+col7, col8, col9, col10 = st.columns(4)
 
-with col5:
+with col7:
 
     st.metric(
         "📊 Max RMS",
@@ -454,21 +468,21 @@ with col5:
         ),2)
     )
 
-with col6:
-
+with col8:
+    
     st.metric(
         "🔍 Monitoring Points",
         "A-X | A-Y | B-X | B-Y"
     )
 
-with col7:
+with col9:
 
     st.metric(
         "⏳ Estimated RUL",
         "120 h"
     )
 
-with col8:
+with col10:
 
     status = "Healthy"
 
@@ -845,7 +859,64 @@ st.plotly_chart(
     use_container_width=True
 )
 
+st.subheader("📡 Vibration Signal")
 
+signal = [
+    AX.get("RMS",0),
+    AY.get("RMS",0),
+    BX.get("RMS",0),
+    BY.get("RMS",0)
+]
+
+fig_signal = go.Figure()
+
+fig_signal.add_trace(
+    go.Scatter(
+        y=signal,
+        mode="lines+markers",
+        name="Vibration"
+    )
+)
+
+fig_signal.update_layout(
+    title="Vibration Signal",
+    xaxis_title="Monitoring Point",
+    yaxis_title="Amplitude"
+)
+
+st.plotly_chart(
+    fig_signal,
+    use_container_width=True
+)
+st.subheader("📊 FFT Spectrum")
+
+freq = [10,20,30,40]
+amp = [
+    AX.get("PeakAmp",0),
+    AY.get("PeakAmp",0),
+    BX.get("PeakAmp",0),
+    BY.get("PeakAmp",0)
+]
+
+fig_fft = go.Figure()
+
+fig_fft.add_trace(
+    go.Bar(
+        x=freq,
+        y=amp
+    )
+)
+
+fig_fft.update_layout(
+    title="Frequency Spectrum",
+    xaxis_title="Frequency (Hz)",
+    yaxis_title="Amplitude"
+)
+
+st.plotly_chart(
+    fig_fft,
+    use_container_width=True
+)
 # =====================================
 # HEALTH TREND
 # =====================================
