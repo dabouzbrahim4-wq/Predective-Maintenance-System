@@ -909,7 +909,7 @@ GLOBAL MACHINE STATUS
 Health Score : {health_score:.1f} %
 Priority     : {priority}
 Severity     : {severity}
-Machine State: {machine_status}
+Machine State: {status}
 
 Detected Fault : {fault}
 Fault Location : {location}
