@@ -223,8 +223,8 @@ fault = "Normal"
 
 for point in [AX, AY, BX, BY]:
 
-    current_fault = point.get("Fault", "Normal")
-    current_condition = point.get("Condition", "Healthy")
+    current_fault = str(point.get("Fault", "Normal")).strip()
+    current_condition = str(point.get("Condition", "Healthy")).strip()
 
     if current_fault != "Normal":
         fault = current_fault
@@ -234,15 +234,31 @@ for point in [AX, AY, BX, BY]:
         fault = current_condition
         break
 
+
+# تحويل أسماء الأعطال القادمة من Firebase إلى أسماء موجودة في fault_info
+
+if "BPFI" in fault:
+    fault = "BPFI_10"
+
+elif "BPFO" in fault:
+    fault = "BPFO_10"
+
+elif "Misalign" in fault:
+    fault = "Misalign_03"
+
+elif "Unbalance" in fault:
+    fault = "Unbalance_1169mg"
+
+
 if fault not in fault_info:
     fault = "Normal"
+
 
 severity = fault_info[fault]["severity"]
 location = fault_info[fault]["location"]
 recommendation = fault_info[fault]["recommendation"]
 health_score = fault_info[fault]["score"]
 rul = fault_info[fault]["rul"]
-
 if health_score >= 80:
     priority = "Low"
 
