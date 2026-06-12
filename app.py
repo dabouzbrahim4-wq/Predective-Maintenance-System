@@ -960,3 +960,9 @@ AI-Based Predictive Maintenance Dashboard
 
 ==================================================
 """
+st.download_button(
+    label="📥 Download Maintenance Report",
+    data=report_text,
+    file_name=f"Maintenance_Report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
+    mime="text/plain"
+)
