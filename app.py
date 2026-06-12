@@ -493,121 +493,6 @@ with col10:
     )
 st.markdown("---")
 
-# ==========================================
-# HEALTH INDEX
-# ==========================================
-
-avg_rms = (
-    float(AX.get("RMS", 0)) +
-    float(AY.get("RMS", 0)) +
-    float(BX.get("RMS", 0)) +
-    float(BY.get("RMS", 0))
-) / 4
-
-health_score = max(
-    0,
-    min(
-        100,
-        100 - avg_rms * 5
-    )
-)
-
-st.subheader("🏥 Machine Health Index")
-
-st.progress(int(health_score))
-
-st.metric(
-    "Global Health Score",
-    f"{health_score:.1f}%"
-)
-
-if health_score >= 80:
-    st.success("✅ Machine in Good Condition")
-
-elif health_score >= 50:
-    st.warning("⚠️ Machine Requires Monitoring")
-
-else:
-    st.error("🚨 Critical Condition - Maintenance Required")
-
-
-# ==========================================
-# GLOBAL MACHINE STATUS
-# ==========================================
-
-fault_count = 0
-
-for point in [AX, AY, BX, BY]:
-
-    if point.get("Fault", "Normal") != "Normal":
-        fault_count += 1
-
-if severity == "Critical":
-
-    machine_status = "Critical"
-    status_color = "🔴"
-
-elif severity == ["High" , "Medium"]:
-
-    machine_status = "Warning"
-    status_color = "🟡"
-else:
-
-    machine_status = "Healthy"
-    status_color = "🟢"
-
-st.subheader("⚙ Global Machine Status")
-
-st.info(
-    f"{status_color} Current Status : {machine_status}"
-)
-
-if machine_status == "Critical":
-
-    st.error("🚨 Critical Machine Condition")
-
-elif machine_status == "Warning":
-
-    st.warning("⚠️ Warning Condition")
-
-else:
-
-    st.success("✅ Healthy Machine")
-
-# =====================================
-# MONITORING POINTS OVERVIEW
-# =====================================
-
-st.subheader("🏭 Monitoring Points Overview")
-
-colA,colB,colC,colD = st.columns(4)
-
-with colA:
-    st.metric(
-        "A-X",
-        AX.get("Fault","Unknown")
-    )
-
-with colB:
-    st.metric(
-        "A-Y",
-        AY.get("Fault","Unknown")
-    )
-
-with colC:
-    st.metric(
-        "B-X",
-        BX.get("Fault","Unknown")
-    )
-
-with colD:
-    st.metric(
-        "B-Y",
-        BY.get("Fault","Unknown")
-    )
-
-st.markdown("---")
-# ==================================================
 with col3:
 
     st.markdown("### ⏳ Remaining Useful Life")
@@ -622,6 +507,7 @@ with col3:
         st.success(recommendation)
     else:
         st.warning(recommendation)
+
 # ==========================================
 # CURRENT FEATURES
 # ==========================================
