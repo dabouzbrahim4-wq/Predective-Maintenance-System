@@ -281,7 +281,7 @@ with colA:
         else:
             st.error(f"🔴 A-X : {AX['Fault']}")
 
-        st.write("RMS :", round(float(AX["RMS"]),2))
+        st.write("Acceleration :", f"{round(float(AX['RMS']),2)} g")
         st.write("Severity :", AX["Severity"])
 
     st.markdown("---")
@@ -293,8 +293,8 @@ with colA:
         else:
             st.error(f"🔴 A-Y : {AY['Fault']}")
 
-        st.write("RMS :", round(float(AY["RMS"]),2))
-        st.write("Severity :", AY["Severity"])
+        st.write("Acceleration :", f"{round(float(AX['RMS']),2)} g")
+        st.write("Severity :", AX["Severity"])
 
 with colB:
 
@@ -307,8 +307,8 @@ with colB:
         else:
             st.error(f"🔴 B-X : {BX['Fault']}")
 
-        st.write("RMS :", round(float(BX["RMS"]),2))
-        st.write("Severity :", BX["Severity"])
+        st.write("Acceleration :", f"{round(float(AX['RMS']),2)} g")
+        st.write("Severity :", AX["Severity"])
 
     st.markdown("---")
 
@@ -319,8 +319,8 @@ with colB:
         else:
             st.error(f"🔴 B-Y : {BY['Fault']}")
 
-        st.write("RMS :", round(float(BY["RMS"]),2))
-        st.write("Severity :", BY["Severity"])
+        st.write("Acceleration :", f"{round(float(AX['RMS']),2)} g")
+        st.write("Severity :", AX["Severity"])
         # ==========================================
 # FAULT LOCALIZATION
 # ==========================================
