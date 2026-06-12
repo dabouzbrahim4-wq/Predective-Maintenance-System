@@ -11,7 +11,7 @@ if not firebase_admin._apps:
         cred,
         {
             "databaseURL":
-            "https://predictivemaintenance-aef92-default-rtdb.firebaseio.com/"
+            "https://predectivemaintenance-aef92-default-rtdb.firebaseio.com/"
         }
     )
 
