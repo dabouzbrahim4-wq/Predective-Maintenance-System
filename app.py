@@ -572,6 +572,7 @@ st.dataframe(
 # ==================================
 # HEALTH HISTORY VISUALIZATION
 # ==================================
+
 try:
     health_history = pd.read_csv(
         "health_history.csv"
@@ -579,16 +580,16 @@ try:
 
 except:
     health_history = pd.DataFrame(
-        columns=["Time","HealthScore"]
+        columns=["Time", "HealthScore"]
     )
 
 new_health = pd.DataFrame({
-    "Time":[datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
-    "HealthScore":[health_score]
+    "Time": [datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
+    "HealthScore": [health_score]
 })
 
 health_history = pd.concat(
-    [health_history,new_health],
+    [health_history, new_health],
     ignore_index=True
 )
 
@@ -610,7 +611,7 @@ fig_health = px.line(
 )
 
 fig_health.update_layout(
-    yaxis_range=[0,100],
+    yaxis_range=[0, 100],
     height=500
 )
 
@@ -662,30 +663,7 @@ with col3:
         f"{worst_health:.1f}%"
     )
 
-# ==================================
-# FAULT DISTRIBUTION
-# ==================================
-
-fault_count = history["Fault"].value_counts().reset_index()
-
-fault_count.columns = [
-    "Fault",
-    "Occurrences"
-]
-
-st.subheader("🥧 Fault Distribution")
-
-fig_fault = px.pie(
-    fault_count,
-    names="Fault",
-    values="Occurrences",
-    hole=0.4
-)
-
-st.plotly_chart(
-    fig_fault,
-    use_container_width=True
-)
+st.markdown("---")
 
 # ==================================
 # RMS TREND PER POINT
