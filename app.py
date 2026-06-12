@@ -847,8 +847,8 @@ Remaining Useful Life (RUL) :
 VIBRATION ANALYSIS
 ==================================================
 
-Average RMS          : {avg_rms:.2f}
-Acceleration RMS     : {avg_rms:.2f} g
+
+Acceleration         : {avg_rms:.2f} g
 Velocity RMS         : {velocity_rms:.2f} mm/s
 
 Maximum RMS Value    :
