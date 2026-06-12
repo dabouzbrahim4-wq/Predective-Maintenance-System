@@ -547,11 +547,11 @@ if severity == "Critical":
     machine_status = "Critical"
     status_color = "🔴"
 
-  elif severity == ["High" , "Medium"]:
+elif severity == ["High" , "Medium"]:
 
     machine_status = "Warning"
     status_color = "🟡"
-    else:
+else:
 
     machine_status = "Healthy"
     status_color = "🟢"
