@@ -4,7 +4,7 @@ from firebase_admin import credentials, db
 if not firebase_admin._apps:
 
     cred = credentials.Certificate(
-        "firebase-key.json"
+        "predectivemaintenance-aef92-firebase-adminsdk-fbsvc-511e12fdf5"
     )
 
     firebase_admin.initialize_app(
