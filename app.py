@@ -307,7 +307,7 @@ with colB:
         else:
             st.error(f"🔴 B-X : {BX['Fault']}")
 
-        st.write("Acceleration :", f"{round(float(BY['RMS']),2)} g")
+        st.write("Acceleration :", f"{round(float(BX['RMS']),2)} g")
         st.write("Severity :", BX["Severity"])
 
     st.markdown("---")
