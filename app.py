@@ -886,10 +886,11 @@ st.plotly_chart(
     use_container_width=True
 )
 
-st.subheader("Generate Maintenance Report")
+st.subheader("📄 Generate Maintenance Report")
+
 report_text = f"""
 ==================================================
-        PREDICTIVE MAINTENANCE REPORT
+PREDICTIVE MAINTENANCE REPORT
 ==================================================
 
 Date :
@@ -909,12 +910,12 @@ Health Score : {health_score:.1f} %
 Priority     : {priority}
 Severity     : {severity}
 Machine State: {machine_status}
+
 Detected Fault : {fault}
 Fault Location : {location}
 
 Remaining Useful Life (RUL) :
 {rul} Days
-
 ==================================================
 VIBRATION ANALYSIS
 ==================================================
