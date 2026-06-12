@@ -494,12 +494,17 @@ with col10:
 st.markdown("---")
 
 with col3:
+st.markdown("---")
 
-    st.markdown("### ⏳ Remaining Useful Life")
+col11, col12 = st.columns(2)
+
+with col11:
     st.metric(
-        "RUL",
+        "⏳ Remaining Useful Life",
         f"{rul} Days"
     )
+
+with col12:
 
     st.markdown("### 🔧 Recommendation")
 
@@ -507,7 +512,6 @@ with col3:
         st.success(recommendation)
     else:
         st.warning(recommendation)
-
 # ==========================================
 # CURRENT FEATURES
 # ==========================================
