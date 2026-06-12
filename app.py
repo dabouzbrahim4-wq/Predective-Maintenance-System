@@ -498,10 +498,10 @@ st.markdown("---")
 # ==========================================
 
 avg_rms = (
-    float(AX.get("RMS",0)) +
-    float(AY.get("RMS",0)) +
-    float(BX.get("RMS",0)) +
-    float(BY.get("RMS",0))
+    float(AX.get("RMS", 0)) +
+    float(AY.get("RMS", 0)) +
+    float(BX.get("RMS", 0)) +
+    float(BY.get("RMS", 0))
 ) / 4
 
 health_score = max(
@@ -522,47 +522,56 @@ st.metric(
 )
 
 if health_score >= 80:
-    st.success("Machine in Good Condition")
+    st.success("✅ Machine in Good Condition")
 
 elif health_score >= 50:
-    st.warning("Machine Requires Monitoring")
+    st.warning("⚠️ Machine Requires Monitoring")
 
 else:
-    st.error("Critical Condition - Maintenance Required")
-    
-    # ==========================================
+    st.error("🚨 Critical Condition - Maintenance Required")
+
+
+# ==========================================
+# GLOBAL MACHINE STATUS
+# ==========================================
+
+fault_count = 0
+
+for point in [AX, AY, BX, BY]:
+
+    if point.get("Fault", "Normal") != "Normal":
+        fault_count += 1
+
 if severity == "Critical":
 
     machine_status = "Critical"
     status_color = "🔴"
 
-elif severity == "High":
+elif severity == "High و "Medium":
 
     machine_status = "Warning"
     status_color = "🟡"
-
-elif fault_count > 0:
-
-    machine_status = "Warning"
-    status_color = "🟡"
-
-else:
+    else:
 
     machine_status = "Healthy"
     status_color = "🟢"
-    st.subheader("⚙ Global Machine Status")
+
+st.subheader("⚙ Global Machine Status")
 
 st.info(
     f"{status_color} Current Status : {machine_status}"
 )
 
 if machine_status == "Critical":
+
     st.error("🚨 Critical Machine Condition")
 
 elif machine_status == "Warning":
+
     st.warning("⚠️ Warning Condition")
 
 else:
+
     st.success("✅ Healthy Machine")
 
 # =====================================
@@ -674,103 +683,182 @@ st.dataframe(
     hide_index=True
 )
 
-# ==========================================
-# HISTORY
-# ==========================================
+# ==================================
+# HEALTH HISTORY VISUALIZATION
+# ==================================
 
-try:
+st.subheader("📈 Machine Health Evolution")
 
-    history = pd.read_csv("history.csv")
+history_plot = health_history.tail(50)
 
-except:
-
-    history = pd.DataFrame(columns=["Time","Fault"])
-
-new_record = pd.DataFrame({
-    "Time":[datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
-    "MachineID":[machine_id],
-    "Fault":[fault],
-    "Severity":[severity],
-    "HealthScore":[health_score]
-})
-
-
-history = pd.concat(
-    [history,new_record],
-    ignore_index=True
+fig_health = px.line(
+    history_plot,
+    x="Time",
+    y="HealthScore",
+    markers=True,
+    title="Machine Health Trend"
 )
 
-history.to_csv("history.csv",index=False)
-total_faults = len(history)
-
-st.metric(
-    "Total Detections",
-    total_faults
+fig_health.update_layout(
+    yaxis_range=[0,100],
+    height=500
 )
 
-fault_history = history[
-    history["Fault"] != "Normal"
-]
-
-if len(fault_history) > 0:
-    last_fault = fault_history.iloc[-1]["Fault"]
-else:
-    last_fault = "No Fault Detected"
-
-st.metric(
-    "Last Fault",
-    last_fault
+fig_health.add_hline(
+    y=80,
+    line_dash="dash",
+    annotation_text="Healthy Zone"
 )
-st.dataframe(
-    history.tail(20)
+
+fig_health.add_hline(
+    y=50,
+    line_dash="dash",
+    annotation_text="Warning Zone"
+)
+
+st.plotly_chart(
+    fig_health,
+    use_container_width=True
 )
 
 # ==================================
-# HEALTH HISTORY
+# HEALTH KPIs
 # ==================================
 
-try:
-    health_history = pd.read_csv(
-        "health_history.csv"
+col1, col2, col3 = st.columns(3)
+
+with col1:
+
+    st.metric(
+        "🏥 Current Health",
+        f"{health_score:.1f}%"
     )
 
-except:
-    health_history = pd.DataFrame(
-        columns=["Time","HealthScore"]
+with col2:
+
+    best_health = health_history["HealthScore"].max()
+
+    st.metric(
+        "📈 Best Health",
+        f"{best_health:.1f}%"
     )
 
-new_health = pd.DataFrame({
-    "Time":[datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
-    "HealthScore":[health_score]
-})
+with col3:
 
-health_history = pd.concat(
-    [health_history,new_health],
-    ignore_index=True
-)
+    worst_health = health_history["HealthScore"].min()
 
-health_history.to_csv(
-    "health_history.csv",
-    index=False
-)
+    st.metric(
+        "📉 Lowest Health",
+        f"{worst_health:.1f}%"
+    )
+
+# ==================================
+# FAULT DISTRIBUTION
+# ==================================
 
 fault_count = history["Fault"].value_counts().reset_index()
 
-fault_count.columns=["Fault","Occurrences"]
+fault_count.columns = [
+    "Fault",
+    "Occurrences"
+]
 
-# ==========================================
-# CHART
-# ==========================================
+st.subheader("🥧 Fault Distribution")
 
-st.subheader("Fault Distribution")
-
-fig = px.pie(
+fig_fault = px.pie(
     fault_count,
     names="Fault",
-    values="Occurrences"
+    values="Occurrences",
+    hole=0.4
 )
 
-st.plotly_chart(fig,width="stretch")
+st.plotly_chart(
+    fig_fault,
+    use_container_width=True
+)
+
+# ==================================
+# RMS TREND PER POINT
+# ==================================
+
+st.subheader("📈 RMS Trend Per Monitoring Point")
+
+for key in ["AX", "AY", "BX", "BY"]:
+    if key not in st.session_state:
+        st.session_state[key] = []
+
+st.session_state["AX"].append(
+    float(AX.get("RMS", 0))
+)
+
+st.session_state["AY"].append(
+    float(AY.get("RMS", 0))
+)
+
+st.session_state["BX"].append(
+    float(BX.get("RMS", 0))
+)
+
+st.session_state["BY"].append(
+    float(BY.get("RMS", 0))
+)
+
+for key in ["AX", "AY", "BX", "BY"]:
+    if len(st.session_state[key]) > 50:
+        st.session_state[key].pop(0)
+
+trend_df = pd.DataFrame({
+    "AX": st.session_state["AX"],
+    "AY": st.session_state["AY"],
+    "BX": st.session_state["BX"],
+    "BY": st.session_state["BY"]
+})
+
+fig_rms = px.line(
+    trend_df,
+    title="Monitoring Points RMS Evolution"
+)
+
+st.plotly_chart(
+    fig_rms,
+    use_container_width=True
+)
+
+# ==================================
+# FFT SPECTRUM
+# ==================================
+
+st.subheader("📊 FFT Spectrum")
+
+freq = [10, 20, 30, 40]
+
+amp = [
+    AX.get("PeakAmp", 0),
+    AY.get("PeakAmp", 0),
+    BX.get("PeakAmp", 0),
+    BY.get("PeakAmp", 0)
+]
+
+fig_fft = go.Figure()
+
+fig_fft.add_trace(
+    go.Bar(
+        x=freq,
+        y=amp,
+        name="Amplitude"
+    )
+)
+
+fig_fft.update_layout(
+    title="Frequency Spectrum",
+    xaxis_title="Frequency (Hz)",
+    yaxis_title="Amplitude"
+)
+
+st.plotly_chart(
+    fig_fft,
+    use_container_width=True
+)
 
 # ==========================================
 # RMS TREND PER POINT
@@ -911,63 +999,149 @@ st.plotly_chart(
 )
 
 
-# ==========================================
-# PDF REPORT
-# ==========================================
-
-st.subheader("📄 Generate Maintenance Report")
-
 report_text = f"""
-PREDICTIVE MAINTENANCE REPORT
+==================================================
+        PREDICTIVE MAINTENANCE REPORT
+==================================================
 
-Date:
+Date :
 {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
 
-==================================
+Machine ID :
+{machine_id}
 
+Machine Name :
+{machine_name}
+
+==================================================
 GLOBAL MACHINE STATUS
+==================================================
 
-Health Score : {health_score} %
+Health Score : {health_score:.1f} %
 Priority     : {priority}
 Severity     : {severity}
-Fault        : {fault}
-Location     : {location}
-RUL          : {rul} Days
+Machine State: {machine_status}
 
-==================================
+Detected Fault : {fault}
+Fault Location : {location}
 
-RECOMMENDATION
+Remaining Useful Life (RUL) :
+{rul} Days
+
+==================================================
+VIBRATION ANALYSIS
+==================================================
+
+Average RMS          : {avg_rms:.2f}
+Acceleration RMS     : {avg_rms:.2f} g
+Velocity RMS         : {velocity_rms:.2f} mm/s
+
+Maximum RMS Value    :
+{max(
+    AX.get("RMS",0),
+    AY.get("RMS",0),
+    BX.get("RMS",0),
+    BY.get("RMS",0)
+):.2f}
+
+==================================================
+FFT SPECTRUM ANALYSIS
+==================================================
+
+A-X
+Peak Frequency : {AX.get('PeakFreq_Hz',0)} Hz
+Peak Amplitude : {AX.get('PeakAmp',0)}
+
+A-Y
+Peak Frequency : {AY.get('PeakFreq_Hz',0)} Hz
+Peak Amplitude : {AY.get('PeakAmp',0)}
+
+B-X
+Peak Frequency : {BX.get('PeakFreq_Hz',0)} Hz
+Peak Amplitude : {BX.get('PeakAmp',0)}
+
+B-Y
+Peak Frequency : {BY.get('PeakFreq_Hz',0)} Hz
+Peak Amplitude : {BY.get('PeakAmp',0)}
+
+==================================================
+MONITORING POINTS DETAILS
+==================================================
+
+A-X
+
+Fault      : {AX.get('Fault','Normal')}
+Condition  : {AX.get('Condition','Healthy')}
+Severity   : {AX.get('Severity','Low')}
+
+RMS        : {AX.get('RMS',0)}
+Kurtosis   : {AX.get('Kurtosis',0)}
+Skewness   : {AX.get('Skewness',0)}
+CrestFactor: {AX.get('CrestFactor',0)}
+
+--------------------------------------------------
+
+A-Y
+
+Fault      : {AY.get('Fault','Normal')}
+Condition  : {AY.get('Condition','Healthy')}
+Severity   : {AY.get('Severity','Low')}
+
+RMS        : {AY.get('RMS',0)}
+Kurtosis   : {AY.get('Kurtosis',0)}
+Skewness   : {AY.get('Skewness',0)}
+CrestFactor: {AY.get('CrestFactor',0)}
+
+--------------------------------------------------
+
+B-X
+
+Fault      : {BX.get('Fault','Normal')}
+Condition  : {BX.get('Condition','Healthy')}
+Severity   : {BX.get('Severity','Low')}
+
+RMS        : {BX.get('RMS',0)}
+Kurtosis   : {BX.get('Kurtosis',0)}
+Skewness   : {BX.get('Skewness',0)}
+CrestFactor: {BX.get('CrestFactor',0)}
+
+--------------------------------------------------
+
+B-Y
+
+Fault      : {BY.get('Fault','Normal')}
+Condition  : {BY.get('Condition','Healthy')}
+Severity   : {BY.get('Severity','Low')}
+
+RMS        : {BY.get('RMS',0)}
+Kurtosis   : {BY.get('Kurtosis',0)}
+Skewness   : {BY.get('Skewness',0)}
+CrestFactor: {BY.get('CrestFactor',0)}
+
+==================================================
+MAINTENANCE RECOMMENDATION
+==================================================
 
 {recommendation}
 
-==================================
+==================================================
+REPORT SUMMARY
+==================================================
 
-MONITORING POINTS
+Total Monitoring Points : 4
 
-AX :
-Fault = {AX.get('Fault','Normal')}
-RMS = {AX.get('RMS',0)}
+Faulty Points :
+{critical_faults}
 
-AY :
-Fault = {AY.get('Fault','Normal')}
-RMS = {AY.get('RMS',0)}
+Current Machine Status :
+{machine_status}
 
-BX :
-Fault = {BX.get('Fault','Normal')}
-RMS = {BX.get('RMS',0)}
-
-BY :
-Fault = {BY.get('Fault','Normal')}
-RMS = {BY.get('RMS',0)}
-
-==================================
+Health Assessment :
+{health_score:.1f} %
 
 Generated Automatically By
-Predictive Maintenance Dashboard
+
+AI-Based Predictive Maintenance Dashboard
+
+==================================================
 """
-st.download_button(
-    label="📥 Download Report",
-    data=report_text,
-    file_name=f"Maintenance_Report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
-    mime="text/plain"
-)
