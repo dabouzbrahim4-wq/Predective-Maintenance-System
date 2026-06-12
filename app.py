@@ -1022,7 +1022,7 @@ Faulty Points :
 {critical_faults}
 
 Current Machine Status :
-{machine_status}
+{status}
 
 Health Assessment :
 {health_score:.1f} %
