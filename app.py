@@ -410,7 +410,7 @@ critical_faults = sum([
     BY.get("Fault","Normal") != "Normal"
 ])
 
-col1, col2, col3, col4, col5, col6 = st.columns(6)
+col1, col2, col3, col4, col5,  = st.columns(5)
 
 with col1:
     st.metric(
@@ -430,19 +430,15 @@ with col3:
         critical_faults
     )
 
-with col4:
-    st.metric(
-        "⚙ Average RMS",
-        round(avg_rms, 2)
-    )
 
-with col5:
+
+with col4:
     st.metric(
         "⚡ Acceleration",
         f"{avg_rms:.2f} g"
     )
 
-with col6:
+with col5:
     st.metric(
         "🚀 Velocity RMS",
         f"{velocity_rms:.2f} mm/s"
