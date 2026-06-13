@@ -244,24 +244,21 @@ min-width:120px;
 text-align:center;
 font-weight:bold;
 ">
-⚙️ Brake
+🔋 Motor
 </div>
 
-<div style="font-size:26px;"><--</div>
+<div style="font-size:26px;">➜</div>
 
 <div style="
 padding:14px;
 border:2px solid #555;
 border-radius:10px;
 background:white;
-min-width:160px;
+min-width:140px;
 text-align:center;
 font-weight:bold;
 ">
-🔵 AX<br>
-🔵 AY
-<br><br>
-Housing A
+📏 Torque Meter
 </div>
 
 <div style="font-size:26px;">➜</div>
@@ -275,7 +272,7 @@ min-width:120px;
 text-align:center;
 font-weight:bold;
 ">
-🌀 Rotor
+⚙️ Gearbox
 </div>
 
 <div style="font-size:26px;">➜</div>
@@ -306,7 +303,7 @@ min-width:120px;
 text-align:center;
 font-weight:bold;
 ">
-⚙️ Gearbox
+🌀 Rotor
 </div>
 
 <div style="font-size:26px;">➜</div>
@@ -316,11 +313,14 @@ padding:14px;
 border:2px solid #555;
 border-radius:10px;
 background:white;
-min-width:140px;
+min-width:160px;
 text-align:center;
 font-weight:bold;
 ">
-📏 Torque Meter
+🔵 AX<br>
+🔵 AY
+<br><br>
+Housing A
 </div>
 
 <div style="font-size:26px;">➜</div>
@@ -334,7 +334,7 @@ min-width:120px;
 text-align:center;
 font-weight:bold;
 ">
-🔋 Motor
+⚙️ Brake
 </div>
 
 </div>
@@ -346,7 +346,7 @@ font-size:18px;
 font-weight:bold;
 color:#2563eb;
 ">
-Rotation Direction ➜
+Power Transmission Direction ➜
 </div>
 
 </div>
