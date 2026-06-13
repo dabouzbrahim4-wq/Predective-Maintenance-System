@@ -358,12 +358,13 @@ Rotation Direction ➜
 
 st.markdown("## ⚙️ System Characteristics")
 
-c1 = st.columns(1)
+c1 , c2 = st.columns(2)
 
 with c1:
     st.metric("Motor Power", "2.24 Kw")
+    
+with c2:
     st.metric("Rated Speed", "3010 RPM")
-
 
 
 st.info("""
