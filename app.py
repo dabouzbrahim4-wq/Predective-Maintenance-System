@@ -358,19 +358,13 @@ Rotation Direction ➜
 
 st.markdown("## ⚙️ System Characteristics")
 
-c1, c2, c3 = st.columns(3)
+c1 = st.columns(1)
 
 with c1:
-    st.metric("Motor Power", "3 HP")
+    st.metric("Motor Power", "2.24 Kw")
     st.metric("Rated Speed", "3010 RPM")
 
-with c2:
-    st.metric("Accelerometers", "4")
-    st.metric("Monitoring Points", "AX AY BX BY")
 
-with c3:
-    st.metric("Load Range", "0 - 4 Nm")
-    st.metric("Sampling Rate", "25.6 kHz")
 
 st.info("""
 📍 AX : Housing A (X Direction)
