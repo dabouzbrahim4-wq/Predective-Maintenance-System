@@ -247,7 +247,7 @@ font-weight:bold;
 ⚙️ Brake
 </div>
 
-<div style="font-size:26px;">➜</div>
+<div style="font-size:26px;"><--</div>
 
 <div style="
 padding:14px;
