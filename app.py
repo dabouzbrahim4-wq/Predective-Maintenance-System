@@ -212,55 +212,79 @@ st.markdown("## 🏭 Machine Layout & Measurement Points")
 st.markdown("""
 <div style="
 padding:20px;
-border:1px solid #ddd;
-border-radius:10px;
-background-color:#fafafa;
-text-align:center;
+border:1px solid #dcdcdc;
+border-radius:15px;
+background:#fafafa;
+overflow-x:auto;
 ">
 
-<h4>Rotating Machinery Test Bench</h4>
+<h3 style="text-align:center;">
+Rotating Machinery Test Bench
+</h3>
 
-<div style="display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-top:20px;">
+<div style="
+display:flex;
+align-items:center;
+justify-content:center;
+gap:12px;
+margin-top:25px;
+min-width:1300px;
+">
 
-<div style="padding:12px;border:2px solid #666;border-radius:8px;">
-🔵 AX<br>🔵 AY<br><b>Housing B</b>
-</div>
-
-➡️
-
-<div style="padding:12px;border:2px solid #666;border-radius:8px;">
+<div style="padding:15px;border:2px solid #666;border-radius:10px;text-align:center;min-width:120px;">
 ⚙️ Brake
 </div>
 
 ➡️
 
-<div style="padding:12px;border:2px solid #666;border-radius:8px;">
+<div style="padding:15px;border:2px solid #666;border-radius:10px;text-align:center;min-width:140px;">
+🔵 AX<br>
+🔵 AY<br><br>
+<b>Housing A</b>
+</div>
+
+➡️
+
+<div style="padding:15px;border:2px solid #666;border-radius:10px;text-align:center;min-width:120px;">
 🌀 Rotor
 </div>
 
 ➡️
 
-<div style="padding:12px;border:2px solid #666;border-radius:8px;">
+<div style="padding:15px;border:2px solid #666;border-radius:10px;text-align:center;min-width:140px;">
+🔴 BX<br>
+🔴 BY<br><br>
+<b>Housing B</b>
+</div>
+
+➡️
+
+<div style="padding:15px;border:2px solid #666;border-radius:10px;text-align:center;min-width:120px;">
 ⚙️ Gearbox
 </div>
 
 ➡️
 
-<div style="padding:12px;border:2px solid #666;border-radius:8px;">
-🔴 BX<br>🔴 BY<br><b>Housing A</b>
+<div style="padding:15px;border:2px solid #666;border-radius:10px;text-align:center;min-width:140px;">
+📏 Torque Meter
 </div>
 
 ➡️
 
-<div style="padding:12px;border:2px solid #666;border-radius:8px;">
+<div style="padding:15px;border:2px solid #666;border-radius:10px;text-align:center;min-width:120px;">
 🔋 Motor
 </div>
 
 </div>
 
-<br>
-
-<b>Rotation Direction ➜</b>
+<div style="
+text-align:center;
+margin-top:25px;
+font-size:18px;
+font-weight:bold;
+">
+Rotation Direction ➜
+</div>
 
 </div>
 """, unsafe_allow_html=True)
