@@ -207,18 +207,22 @@ data = root.child("current_data").get()
 if not data:
     st.warning("Waiting for Firebase Data...")
     st.stop()
-st.markdown("## 🏭 Machine Layout & Measurement Points")
+# ==========================================
+# MACHINE LAYOUT
+# ==========================================
+
+st.markdown("## 🏭 Industrial Test Bench Overview")
 
 st.markdown("""
 <div style="
-padding:20px;
-border:1px solid #dcdcdc;
+padding:25px;
+border:1px solid #d9d9d9;
 border-radius:15px;
 background:#fafafa;
 overflow-x:auto;
 ">
 
-<h3 style="text-align:center;">
+<h3 style="text-align:center;color:#1f2937;">
 Rotating Machinery Test Bench
 </h3>
 
@@ -226,52 +230,110 @@ Rotating Machinery Test Bench
 display:flex;
 align-items:center;
 justify-content:center;
-gap:12px;
-margin-top:25px;
-min-width:1300px;
+gap:15px;
+margin-top:35px;
+min-width:1200px;
 ">
 
-<div style="padding:15px;border:2px solid #666;border-radius:10px;text-align:center;min-width:120px;">
+<div style="
+padding:14px;
+border:2px solid #555;
+border-radius:10px;
+background:white;
+min-width:120px;
+text-align:center;
+font-weight:bold;
+">
 ⚙️ Brake
 </div>
 
-➡️
+<div style="font-size:26px;">➜</div>
 
-<div style="padding:15px;border:2px solid #666;border-radius:10px;text-align:center;min-width:140px;">
+<div style="
+padding:14px;
+border:2px solid #555;
+border-radius:10px;
+background:white;
+min-width:160px;
+text-align:center;
+font-weight:bold;
+">
 🔵 AX<br>
-🔵 AY<br><br>
-<b>Housing A</b>
+🔵 AY
+<br><br>
+Housing A
 </div>
 
-➡️
+<div style="font-size:26px;">➜</div>
 
-<div style="padding:15px;border:2px solid #666;border-radius:10px;text-align:center;min-width:120px;">
+<div style="
+padding:14px;
+border:2px solid #555;
+border-radius:10px;
+background:white;
+min-width:120px;
+text-align:center;
+font-weight:bold;
+">
 🌀 Rotor
 </div>
 
-➡️
+<div style="font-size:26px;">➜</div>
 
-<div style="padding:15px;border:2px solid #666;border-radius:10px;text-align:center;min-width:140px;">
+<div style="
+padding:14px;
+border:2px solid #555;
+border-radius:10px;
+background:white;
+min-width:160px;
+text-align:center;
+font-weight:bold;
+">
 🔴 BX<br>
-🔴 BY<br><br>
-<b>Housing B</b>
+🔴 BY
+<br><br>
+Housing B
 </div>
 
-➡️
+<div style="font-size:26px;">➜</div>
 
-<div style="padding:15px;border:2px solid #666;border-radius:10px;text-align:center;min-width:120px;">
+<div style="
+padding:14px;
+border:2px solid #555;
+border-radius:10px;
+background:white;
+min-width:120px;
+text-align:center;
+font-weight:bold;
+">
 ⚙️ Gearbox
 </div>
 
-➡️
+<div style="font-size:26px;">➜</div>
 
-<div style="padding:15px;border:2px solid #666;border-radius:10px;text-align:center;min-width:140px;">
+<div style="
+padding:14px;
+border:2px solid #555;
+border-radius:10px;
+background:white;
+min-width:140px;
+text-align:center;
+font-weight:bold;
+">
 📏 Torque Meter
 </div>
 
-➡️
+<div style="font-size:26px;">➜</div>
 
-<div style="padding:15px;border:2px solid #666;border-radius:10px;text-align:center;min-width:120px;">
+<div style="
+padding:14px;
+border:2px solid #555;
+border-radius:10px;
+background:white;
+min-width:120px;
+text-align:center;
+font-weight:bold;
+">
 🔋 Motor
 </div>
 
@@ -282,12 +344,48 @@ text-align:center;
 margin-top:25px;
 font-size:18px;
 font-weight:bold;
+color:#2563eb;
 ">
 Rotation Direction ➜
 </div>
 
 </div>
 """, unsafe_allow_html=True)
+
+# ==========================================
+# SYSTEM CHARACTERISTICS
+# ==========================================
+
+st.markdown("## ⚙️ System Characteristics")
+
+c1, c2, c3 = st.columns(3)
+
+with c1:
+    st.metric("Motor Power", "3 HP")
+    st.metric("Rated Speed", "3010 RPM")
+
+with c2:
+    st.metric("Accelerometers", "4")
+    st.metric("Monitoring Points", "AX AY BX BY")
+
+with c3:
+    st.metric("Load Range", "0 - 4 Nm")
+    st.metric("Sampling Rate", "25.6 kHz")
+
+st.info("""
+📍 AX : Housing A (X Direction)
+
+📍 AY : Housing A (Y Direction)
+
+📍 BX : Housing B (X Direction)
+
+📍 BY : Housing B (Y Direction)
+
+The vibration signals acquired from the bearing housings are processed by AI models
+for fault diagnosis, health assessment, and predictive maintenance.
+""")
+
+st.markdown("---")
 
 # ==========================================
 # MONITORING POINTS
