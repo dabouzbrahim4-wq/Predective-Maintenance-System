@@ -207,136 +207,63 @@ data = root.child("current_data").get()
 if not data:
     st.warning("Waiting for Firebase Data...")
     st.stop()
-    # ==========================================
-# MACHINE LAYOUT
-# ==========================================
-
 st.markdown("## 🏭 Machine Layout & Measurement Points")
 
 st.markdown("""
-<svg width="100%" height="280" viewBox="0 0 1100 280">
+<div style="
+padding:20px;
+border:1px solid #ddd;
+border-radius:10px;
+background-color:#fafafa;
+text-align:center;
+">
 
-<text x="340" y="25" font-size="24" font-weight="bold">
-Rotating Machinery Test Bench
-</text>
+<h4>Rotating Machinery Test Bench</h4>
 
-<!-- Housing B -->
-<rect x="260" y="40" width="140" height="50"
-fill="#eef5ff" stroke="#444" stroke-width="2"/>
-<text x="285" y="70" font-size="18">
-Housing B
-</text>
+<div style="display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-top:20px;">
 
-<!-- Housing A -->
-<rect x="560" y="40" width="140" height="50"
-fill="#eef5ff" stroke="#444" stroke-width="2"/>
-<text x="585" y="70" font-size="18">
-Housing A
-</text>
+<div style="padding:12px;border:2px solid #666;border-radius:8px;">
+🔵 AX<br>🔵 AY<br><b>Housing B</b>
+</div>
 
-<!-- AX -->
-<circle cx="290" cy="20" r="10" fill="green"/>
-<text x="278" y="15" font-size="14">AX</text>
+➡️
 
-<!-- AY -->
-<circle cx="370" cy="20" r="10" fill="green"/>
-<text x="358" y="15" font-size="14">AY</text>
+<div style="padding:12px;border:2px solid #666;border-radius:8px;">
+⚙️ Brake
+</div>
 
-<!-- BX -->
-<circle cx="590" cy="20" r="10" fill="green"/>
-<text x="578" y="15" font-size="14">BX</text>
+➡️
 
-<!-- BY -->
-<circle cx="670" cy="20" r="10" fill="green"/>
-<text x="658" y="15" font-size="14">BY</text>
+<div style="padding:12px;border:2px solid #666;border-radius:8px;">
+🌀 Rotor
+</div>
 
-<!-- Lines -->
-<line x1="290" y1="30" x2="290" y2="90" stroke="gray"/>
-<line x1="370" y1="30" x2="370" y2="90" stroke="gray"/>
-<line x1="590" y1="30" x2="590" y2="90" stroke="gray"/>
-<line x1="670" y1="30" x2="670" y2="90" stroke="gray"/>
+➡️
 
-<!-- Brake -->
-<rect x="40" y="130" width="140" height="60"
-fill="#f8f9fa" stroke="black" stroke-width="2"/>
-<text x="85" y="168" font-size="20">
-Brake
-</text>
+<div style="padding:12px;border:2px solid #666;border-radius:8px;">
+⚙️ Gearbox
+</div>
 
-<!-- Rotor -->
-<rect x="250" y="130" width="180" height="60"
-fill="#f8f9fa" stroke="black" stroke-width="2"/>
-<text x="315" y="168" font-size="20">
-Rotor
-</text>
+➡️
 
-<!-- Gearbox -->
-<rect x="510" y="130" width="180" height="60"
-fill="#f8f9fa" stroke="black" stroke-width="2"/>
-<text x="565" y="168" font-size="20">
-Gearbox
-</text>
+<div style="padding:12px;border:2px solid #666;border-radius:8px;">
+🔴 BX<br>🔴 BY<br><b>Housing A</b>
+</div>
 
-<!-- Motor -->
-<rect x="770" y="130" width="180" height="60"
-fill="#f8f9fa" stroke="black" stroke-width="2"/>
-<text x="835" y="168" font-size="20">
-Motor
-</text>
+➡️
 
-<!-- Shaft -->
-<line x1="180" y1="160" x2="250" y2="160"
-stroke="black" stroke-width="4"/>
+<div style="padding:12px;border:2px solid #666;border-radius:8px;">
+🔋 Motor
+</div>
 
-<line x1="430" y1="160" x2="510" y2="160"
-stroke="black" stroke-width="4"/>
+</div>
 
-<line x1="690" y1="160" x2="770" y2="160"
-stroke="black" stroke-width="4"/>
+<br>
 
-<!-- Rotation -->
-<line x1="250" y1="240" x2="820" y2="240"
-stroke="blue" stroke-width="4"/>
+<b>Rotation Direction ➜</b>
 
-<polygon points="820,240 800,230 800,250"
-fill="blue"/>
-
-<text x="470" y="265" font-size="18" fill="blue">
-Rotation Direction
-</text>
-
-</svg>
+</div>
 """, unsafe_allow_html=True)
-
-st.markdown("### ⚙️ System Characteristics")
-
-c1, c2, c3 = st.columns(3)
-
-with c1:
-    st.metric("Motor Power", "3 HP")
-    st.metric("Rated Speed", "3010 RPM")
-
-with c2:
-    st.metric("Monitoring Points", "AX AY BX BY")
-    st.metric("Sensors", "4 Accelerometers")
-
-with c3:
-    st.metric("Load Range", "0-4 Nm")
-    st.metric("Sampling Rate", "25.6 kHz")
-
-st.info("""
-📍 AX : Housing B (X Direction)
-
-📍 AY : Housing B (Y Direction)
-
-📍 BX : Housing A (X Direction)
-
-📍 BY : Housing A (Y Direction)
-
-The vibration signals are acquired from the bearing housings and processed by AI models for fault diagnosis and predictive maintenance.
-""")
-
-st.markdown("---")
 
 # ==========================================
 # MONITORING POINTS
